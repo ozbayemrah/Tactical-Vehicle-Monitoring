@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tactical Vehicle Monitoring</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%97%86%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div id="boot-screen">
+    <div id="boot-text"></div>
+  </div>
+
+  <div id="app">
+    <header id="hud-top">
+      <div class="brand">
+        <span class="brand-mark">&#9670;</span> TACTICAL VEHICLE MONITORING <span class="brand-sub">// SECTOR C2</span>
+      </div>
+      <div class="top-right">
+        <span id="formation-mode" class="formation-badge">LINE</span>
+        <span id="clock">00:00:00</span>
+      </div>
+    </header>
+
+    <div id="map"></div>
+
+    <aside id="hud-side">
+      <div class="panel-title">UNIT STATUS</div>
+      <div id="selection-panel"></div>
+      <div class="panel-title">COMMANDS</div>
+      <div class="cheat-sheet">
+        <div><b>Click</b> select &middot; <b>Shift+Click</b> add</div>
+        <div><b>Shift+Drag</b> box-select</div>
+        <div><b>Right-click</b> move &middot; <b>Shift+RClick</b> queue</div>
+        <div><b>H</b> hold &middot; <b>P</b> patrol loop</div>
+        <div><b>E</b> engage &middot; <b>S</b> scan</div>
+        <div><b>L / C / V</b> formation: line / column / wedge</div>
+        <div><b>Ctrl+1-9</b> assign squad &middot; <b>1-9</b> recall</div>
+      </div>
+    </aside>
+
+    <div id="hud-log">
+      <div class="panel-title">COMMS / EVENT LOG</div>
+      <div id="log-panel"></div>
+    </div>
+  </div>
+
+  <div id="alert-bar"></div>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
