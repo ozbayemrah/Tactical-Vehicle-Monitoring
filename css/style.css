@@ -48,8 +48,9 @@ body {
   grid-template-areas:
     "top top top"
     "roster map side"
+    "gap gap gap"
     "log log cmds";
-  grid-template-rows: 56px 1fr 170px;
+  grid-template-rows: 56px 0.8fr 0.2fr 170px;
   grid-template-columns: 300px 1fr 340px;
   gap: var(--gap);
 }
