@@ -17,42 +17,57 @@
   </div>
 
   <div id="app">
-    <header id="hud-top">
-      <div class="brand">
-        <span class="brand-mark">&#9670;</span> TACTICAL VEHICLE MONITORING <span class="brand-sub">// SECTOR C2</span>
-      </div>
-      <div class="top-right">
-        <span id="formation-mode" class="formation-badge">LINE</span>
-        <span id="clock">00:00:00</span>
+    <header id="hud-top" class="hud-frame">
+      <div class="hud-body">
+        <div class="brand">
+          <span class="brand-mark">&#9670;</span> TACTICAL VEHICLE MONITORING <span class="brand-sub">// SECTOR C2</span>
+        </div>
+        <div class="top-right">
+          <span id="formation-mode" class="formation-badge">LINE</span>
+          <span id="clock">00:00:00</span>
+        </div>
       </div>
     </header>
 
-    <aside id="hud-roster">
-      <div class="panel-title">FLEET ROSTER</div>
-      <div id="roster-panel"></div>
-    </aside>
-
-    <div id="map"></div>
-
-    <aside id="hud-side">
-      <div class="panel-title">UNIT STATUS</div>
-      <div id="selection-panel"></div>
-      <div class="panel-title">COMMANDS</div>
-      <div class="cheat-sheet">
-        <div><b>Click</b> select &middot; <b>Shift+Click</b> add</div>
-        <div><b>Shift+Drag</b> box-select</div>
-        <div><b>Right-click</b> move &middot; <b>Shift+RClick</b> queue</div>
-        <div><b>H</b> hold &middot; <b>P</b> patrol loop</div>
-        <div><b>E</b> engage &middot; <b>S</b> scan</div>
-        <div><b>L / C / V</b> formation: line / column / wedge</div>
-        <div><b>Ctrl+1-9</b> assign squad &middot; <b>1-9</b> recall</div>
+    <aside id="hud-roster" class="hud-frame">
+      <div class="hud-body">
+        <div class="panel-title">FLEET ROSTER</div>
+        <div id="roster-panel"></div>
       </div>
     </aside>
 
-    <div id="hud-log">
-      <div class="panel-title">COMMS / EVENT LOG</div>
-      <div id="log-panel"></div>
+    <div id="map-frame" class="hud-frame">
+      <div id="map"></div>
     </div>
+
+    <aside id="hud-side" class="hud-frame">
+      <div class="hud-body">
+        <div class="panel-title">UNIT STATUS</div>
+        <div id="selection-panel"></div>
+      </div>
+    </aside>
+
+    <div id="hud-log" class="hud-frame">
+      <div class="hud-body">
+        <div class="panel-title">COMMS / EVENT LOG</div>
+        <div id="log-panel"></div>
+      </div>
+    </div>
+
+    <aside id="hud-cmds" class="hud-frame">
+      <div class="hud-body">
+        <div class="panel-title">COMMANDS</div>
+        <div class="cheat-sheet">
+          <div><b>Click</b> select &middot; <b>Shift+Click</b> add</div>
+          <div><b>Shift+Drag</b> box-select</div>
+          <div><b>Right-click</b> move &middot; <b>Shift+RClick</b> queue</div>
+          <div><b>H</b> hold &middot; <b>P</b> patrol loop</div>
+          <div><b>E</b> engage &middot; <b>S</b> scan</div>
+          <div><b>L / C / V</b> formation: line / column / wedge</div>
+          <div><b>Ctrl+1-9</b> assign squad &middot; <b>1-9</b> recall</div>
+        </div>
+      </div>
+    </aside>
   </div>
 
   <div id="alert-bar"></div>

@@ -1,7 +1,7 @@
 :root {
   --bg: #060a0c;
   --panel-bg: rgba(9, 18, 22, 0.92);
-  --panel-border: rgba(0, 229, 255, 0.3);
+  --panel-border: rgba(0, 229, 255, 0.35);
   --cyan: #00e5ff;
   --magenta: #ff2fd0;
   --amber: #ffb300;
@@ -11,8 +11,14 @@
   --font-head: 'Orbitron', sans-serif;
   --font-body: 'Share Tech Mono', monospace;
   --gap: 14px;
-  --radius: 6px;
-  --panel-shadow: 0 0 22px rgba(0, 0, 0, 0.55), inset 0 0 30px rgba(0, 229, 255, 0.03);
+  --cut: 14px;
+  --panel-clip: polygon(
+    var(--cut) 0, calc(100% - var(--cut)) 0,
+    100% var(--cut), 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, var(--cut) 100%,
+    0 calc(100% - var(--cut)), 0 var(--cut)
+  );
+  --panel-inset-glow: inset 0 0 30px rgba(0, 229, 255, 0.04);
 }
 
 * { box-sizing: border-box; }
@@ -36,23 +42,37 @@ html, body {
   grid-template-areas:
     "top top top"
     "roster map side"
-    "log log log";
+    "log log cmds";
   grid-template-rows: 56px 1fr 170px;
   grid-template-columns: 300px 1fr 340px;
   gap: var(--gap);
 }
 
+/* shared floating-panel shape: diagonal cut corners instead of rounded.
+   .hud-frame is a thin colored shell; .hud-body is the inset dark panel,
+   so the border reads correctly along the diagonal cuts. */
+.hud-frame {
+  background: var(--panel-border);
+  clip-path: var(--panel-clip);
+  padding: 1px;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}
+
+.hud-body {
+  height: 100%;
+  background: var(--panel-bg);
+  clip-path: var(--panel-clip);
+  box-shadow: var(--panel-inset-glow);
+}
+
 /* top bar */
-#hud-top {
-  grid-area: top;
+#hud-top { grid-area: top; }
+#hud-top .hud-body {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 18px;
   background: linear-gradient(180deg, rgba(0,229,255,0.08), transparent), var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius);
-  box-shadow: var(--panel-shadow);
 }
 
 .brand {
@@ -80,38 +100,18 @@ html, body {
 #clock { color: var(--cyan); letter-spacing: 1px; }
 
 /* map */
-#map {
-  grid-area: map;
-  background: #04080a;
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius);
-  box-shadow: var(--panel-shadow);
-  overflow: hidden;
-}
+#map-frame { grid-area: map; }
+#map { height: 100%; background: #04080a; clip-path: var(--panel-clip); }
 
 .leaflet-container { background: #04080a; }
 
 /* side panel */
-#hud-side {
-  grid-area: side;
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius);
-  box-shadow: var(--panel-shadow);
-  padding: 12px;
-  overflow-y: auto;
-}
+#hud-side { grid-area: side; }
+#hud-side .hud-body { padding: 12px; overflow-y: auto; }
 
 /* roster panel */
-#hud-roster {
-  grid-area: roster;
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius);
-  box-shadow: var(--panel-shadow);
-  padding: 12px;
-  overflow-y: auto;
-}
+#hud-roster { grid-area: roster; }
+#hud-roster .hud-body { padding: 12px; overflow-y: auto; }
 
 .roster-row {
   border: 1px solid var(--panel-border);
@@ -243,17 +243,18 @@ html, body {
 .cheat-sheet b { color: var(--cyan); }
 
 /* log */
-#hud-log {
-  grid-area: log;
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius);
-  box-shadow: var(--panel-shadow);
+#hud-log { grid-area: log; }
+#hud-log .hud-body {
   padding: 8px 14px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
+
+/* commands panel */
+#hud-cmds { grid-area: cmds; }
+#hud-cmds .hud-body { padding: 10px 14px; overflow-y: auto; }
+#hud-cmds .panel-title { margin-top: 0; }
 
 #log-panel {
   overflow-y: auto;
