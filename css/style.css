@@ -32,10 +32,16 @@ html, body {
   overflow: hidden;
 }
 
+body {
+  display: flex;
+  justify-content: center;
+}
+
 #app {
   position: relative;
   z-index: 1;
-  height: 100vh;
+  height: 90vh;
+  width: 100%;
   box-sizing: border-box;
   padding: var(--gap);
   display: grid;
