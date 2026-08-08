@@ -8,7 +8,7 @@ export function createHud(state) {
   const alertBar = document.getElementById('alert-bar');
   const satCluster = document.getElementById('sat-cluster');
 
-  const modalBackdrop = document.getElementById('modal-backdrop');
+  const modalPanel = document.getElementById('vehicle-modal');
   const modalClose = document.getElementById('modal-close');
   const modalEls = {
     callsign: document.getElementById('modal-callsign'),
@@ -36,9 +36,6 @@ export function createHud(state) {
   });
 
   modalClose.addEventListener('click', closeModal);
-  modalBackdrop.addEventListener('click', (e) => {
-    if (e.target === modalBackdrop) closeModal();
-  });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
   });
@@ -177,14 +174,14 @@ export function createHud(state) {
     state.modalVehicleId = id;
     state.modalOpen = true;
     renderModal();
-    modalBackdrop.classList.remove('hidden');
+    modalPanel.classList.remove('hidden');
   }
 
   function closeModal() {
     if (!state.modalOpen) return;
     state.modalOpen = false;
     state.modalVehicleId = null;
-    modalBackdrop.classList.add('hidden');
+    modalPanel.classList.add('hidden');
   }
 
   function render() {
