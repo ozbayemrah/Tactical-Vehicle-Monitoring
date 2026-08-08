@@ -40,7 +40,7 @@ body {
 #app {
   position: relative;
   z-index: 1;
-  height: 90vh;
+  height: calc(72vh + 56px);
   width: 100%;
   box-sizing: border-box;
   padding: var(--gap);
@@ -48,9 +48,8 @@ body {
   grid-template-areas:
     "top top top"
     "roster map side"
-    "gap gap gap"
     "log log cmds";
-  grid-template-rows: 56px 0.8fr 0.2fr 170px;
+  grid-template-rows: 56px 1fr 170px;
   grid-template-columns: 300px 1fr 340px;
   gap: var(--gap);
 }
