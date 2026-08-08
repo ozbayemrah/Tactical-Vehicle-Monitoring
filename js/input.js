@@ -21,14 +21,14 @@ export function createInput(map, state, hud) {
       else state.selected.add(id);
     });
     refreshSelectionVisuals();
-    hud.renderSelection();
+    hud.render();
   }
 
   function clearSelection() {
     if (state.selected.size === 0) return;
     state.selected.clear();
     refreshSelectionVisuals();
-    hud.renderSelection();
+    hud.render();
   }
 
   function onVehicleClick(id, shift) {

@@ -1,9 +1,15 @@
 export function createHud(state) {
   const selPanel = document.getElementById('selection-panel');
+  const rosterPanel = document.getElementById('roster-panel');
   const logPanel = document.getElementById('log-panel');
   const clockEl = document.getElementById('clock');
   const formationEl = document.getElementById('formation-mode');
   const alertBar = document.getElementById('alert-bar');
+
+  rosterPanel.addEventListener('click', (e) => {
+    const row = e.target.closest('.roster-row');
+    if (row && state.onRosterClick) state.onRosterClick(row.dataset.id, e.shiftKey);
+  });
 
   function fmt(n, d = 1) {
     return Number(n).toFixed(d);
@@ -56,6 +62,33 @@ export function createHud(state) {
     selPanel.innerHTML = selected.map(unitCard).join('');
   }
 
+  function rosterRow(v) {
+    const selected = state.selected.has(v.id) ? ' selected' : '';
+    return `
+      <div class="roster-row${selected}" data-id="${v.id}" style="--type-color:${state.types[v.type].color}">
+        <div class="roster-head">
+          <span class="roster-name">${v.callsign}</span>
+          <span class="roster-type">${state.types[v.type].label}</span>
+        </div>
+        <div class="roster-grid">
+          <div><label>CREW</label><span>${v.crew} PAX</span></div>
+          <div><label>CAPTAIN</label><span>${v.captain}</span></div>
+          <div><label>RADIO</label><span class="${v.comms ? 'comms-ok' : 'comms-lost'}">${v.comms ? 'ON-LINE' : 'OFF-LINE'}</span></div>
+          <div><label>AMMO</label><span>${v.ammo}</span></div>
+          <div><label>ARMOR</label><span>${v.armor}</span></div>
+        </div>
+      </div>`;
+  }
+
+  function renderRoster() {
+    rosterPanel.innerHTML = state.fleet.map(rosterRow).join('');
+  }
+
+  function render() {
+    renderSelection();
+    renderRoster();
+  }
+
   function setFormation(mode) {
     formationEl.textContent = mode;
   }
@@ -64,7 +97,7 @@ export function createHud(state) {
     clockEl.textContent = new Date().toLocaleTimeString('en-GB', { hour12: false });
   }
 
-  return { pushLog, renderSelection, setFormation, tickClock };
+  return { pushLog, render, renderSelection, renderRoster, setFormation, tickClock };
 }
 
 export function runBootSequence(onDone) {

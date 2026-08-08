@@ -12,15 +12,16 @@ function boot() {
   const state = { fleet, types: VEHICLE_TYPES, selected: new Set(), squads: {} };
   const hud = createHud(state);
   const input = createInput(map, state, hud);
+  state.onRosterClick = input.onVehicleClick;
 
   fleet.forEach((v) => {
     v.marker = createMarker(map, v, input.onVehicleClick);
   });
 
-  const sim = createSimulation(state, { onLog: hud.pushLog, render: hud.renderSelection });
+  const sim = createSimulation(state, { onLog: hud.pushLog, render: hud.render });
   sim.start();
 
-  hud.renderSelection();
+  hud.render();
   hud.setFormation('LINE');
   hud.tickClock();
   setInterval(hud.tickClock, 1000);

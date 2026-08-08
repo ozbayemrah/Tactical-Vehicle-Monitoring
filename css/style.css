@@ -29,11 +29,11 @@ html, body {
   height: 100vh;
   display: grid;
   grid-template-areas:
-    "top top"
-    "map side"
-    "log log";
+    "top top top"
+    "roster map side"
+    "log log log";
   grid-template-rows: 56px 1fr 170px;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 300px 1fr 340px;
 }
 
 /* top bar */
@@ -86,6 +86,65 @@ html, body {
   border-left: 1px solid var(--panel-border);
   padding: 12px;
   overflow-y: auto;
+}
+
+/* roster panel */
+#hud-roster {
+  grid-area: roster;
+  background: var(--panel-bg);
+  border-right: 1px solid var(--panel-border);
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.roster-row {
+  border: 1px solid var(--panel-border);
+  border-left: 3px solid var(--type-color, var(--cyan));
+  background: rgba(0, 229, 255, 0.03);
+  padding: 7px 9px;
+  margin-bottom: 7px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.roster-row:hover { background: rgba(0, 229, 255, 0.08); }
+
+.roster-row.selected {
+  background: rgba(0, 229, 255, 0.12);
+  border-color: var(--cyan);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.25);
+}
+
+.roster-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-head);
+  font-size: 11px;
+  color: var(--cyan);
+  margin-bottom: 5px;
+}
+
+.roster-type { color: var(--text-dim); font-family: var(--font-body); font-size: 9px; letter-spacing: 0.5px; }
+
+.roster-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  font-size: 10px;
+}
+
+.roster-grid > div {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 4px;
+  color: #cdeef2;
+}
+
+.roster-grid label {
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
 }
 
 .panel-title {
@@ -306,7 +365,7 @@ html, body {
 }
 
 /* scrollbars */
-#hud-side::-webkit-scrollbar, #log-panel::-webkit-scrollbar { width: 6px; }
-#hud-side::-webkit-scrollbar-thumb, #log-panel::-webkit-scrollbar-thumb {
+#hud-side::-webkit-scrollbar, #hud-roster::-webkit-scrollbar, #log-panel::-webkit-scrollbar { width: 6px; }
+#hud-side::-webkit-scrollbar-thumb, #hud-roster::-webkit-scrollbar-thumb, #log-panel::-webkit-scrollbar-thumb {
   background: var(--panel-border);
 }
