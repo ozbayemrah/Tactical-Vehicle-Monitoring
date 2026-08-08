@@ -3,12 +3,44 @@ export function createHud(state) {
   const rosterPanel = document.getElementById('roster-panel');
   const logPanel = document.getElementById('log-panel');
   const clockEl = document.getElementById('clock');
+  const dateEl = document.getElementById('date');
   const formationEl = document.getElementById('formation-mode');
   const alertBar = document.getElementById('alert-bar');
+  const satCluster = document.getElementById('sat-cluster');
+
+  const modalBackdrop = document.getElementById('modal-backdrop');
+  const modalClose = document.getElementById('modal-close');
+  const modalEls = {
+    callsign: document.getElementById('modal-callsign'),
+    type: document.getElementById('modal-type'),
+    icon: document.getElementById('modal-icon'),
+    fuelBar: document.getElementById('modal-fuel-bar'),
+    fuelVal: document.getElementById('modal-fuel-val'),
+    hullBar: document.getElementById('modal-hull-bar'),
+    hullVal: document.getElementById('modal-hull-val'),
+    radio: document.getElementById('modal-radio'),
+    pos: document.getElementById('modal-pos'),
+    hdg: document.getElementById('modal-hdg'),
+    order: document.getElementById('modal-order'),
+    captain: document.getElementById('modal-captain'),
+    crew: document.getElementById('modal-crew'),
+    squad: document.getElementById('modal-squad'),
+    ammo: document.getElementById('modal-ammo'),
+    armor: document.getElementById('modal-armor'),
+    activity: document.getElementById('modal-activity'),
+  };
 
   rosterPanel.addEventListener('click', (e) => {
     const row = e.target.closest('.roster-row');
     if (row && state.onRosterClick) state.onRosterClick(row.dataset.id, e.shiftKey);
+  });
+
+  modalClose.addEventListener('click', closeModal);
+  modalBackdrop.addEventListener('click', (e) => {
+    if (e.target === modalBackdrop) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
   });
 
   function fmt(n, d = 1) {
@@ -17,6 +49,9 @@ export function createHud(state) {
 
   function pushLog(message, level = 'info') {
     const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+    state.logEntries.unshift({ time, message, level });
+    if (state.logEntries.length > 200) state.logEntries.pop();
+
     const row = document.createElement('div');
     row.className = `log-row log-${level}`;
     row.textContent = `[${time}] ${message}`;
@@ -84,9 +119,79 @@ export function createHud(state) {
     rosterPanel.innerHTML = state.fleet.map(rosterRow).join('');
   }
 
+  function satLabel(status) {
+    if (status === 'LOCKED') return 'ok';
+    if (status === 'DEGRADED') return 'degraded';
+    return 'lost';
+  }
+
+  function renderSatellites() {
+    satCluster.innerHTML = (state.satellites || [])
+      .map((s) => `<span class="sat-chip"><span class="sat-dot ${satLabel(s.status)}"></span>${s.id}</span>`)
+      .join('');
+  }
+
+  function squadsOf(id) {
+    const keys = Object.entries(state.squads || {})
+      .filter(([, set]) => set.has(id))
+      .map(([key]) => key);
+    return keys.length ? keys.join(', ') : 'UNASSIGNED';
+  }
+
+  function renderModal() {
+    if (!state.modalVehicleId) return;
+    const v = state.fleet.find((u) => u.id === state.modalVehicleId);
+    if (!v) return;
+    const type = state.types[v.type];
+
+    modalEls.callsign.textContent = v.callsign;
+    modalEls.type.textContent = type.label;
+    modalEls.icon.style.setProperty('--type-color', type.color);
+    modalEls.icon.style.setProperty('--hdg', `${v.heading}deg`);
+    modalEls.fuelBar.style.width = `${v.fuel}%`;
+    modalEls.fuelBar.className = `bar-fill ${fuelClass(v.fuel)}`;
+    modalEls.fuelVal.textContent = `${fmt(v.fuel, 0)}%`;
+    modalEls.hullBar.style.width = `${v.hull}%`;
+    modalEls.hullBar.className = 'bar-fill ok';
+    modalEls.hullVal.textContent = `${fmt(v.hull, 0)}%`;
+    modalEls.radio.textContent = v.comms ? 'LINK OK' : 'NO SIGNAL';
+    modalEls.radio.className = v.comms ? 'comms-ok' : 'comms-lost';
+    modalEls.pos.textContent = `${fmt(v.lat, 4)}, ${fmt(v.lng, 4)}`;
+    modalEls.hdg.textContent = `${fmt(v.heading, 0)}°`;
+    modalEls.order.textContent = v.order;
+    modalEls.captain.textContent = v.captain;
+    modalEls.crew.textContent = `${v.crew} PAX`;
+    modalEls.squad.textContent = squadsOf(v.id);
+    modalEls.ammo.textContent = v.ammo;
+    modalEls.armor.textContent = v.armor;
+
+    const activity = state.logEntries.filter((e) => e.message.includes(v.callsign)).slice(0, 5);
+    modalEls.activity.innerHTML = activity.length
+      ? activity.map((e) => `<div class="log-row log-${e.level}">[${e.time}] ${e.message}</div>`).join('')
+      : `<div class="no-selection" style="padding:4px 0">No recorded activity yet.</div>`;
+  }
+
+  function openModal(id) {
+    const v = state.fleet.find((u) => u.id === id);
+    if (!v) return;
+    state.modalVehicleId = id;
+    state.modalOpen = true;
+    renderModal();
+    modalBackdrop.classList.remove('hidden');
+  }
+
+  function closeModal() {
+    if (!state.modalOpen) return;
+    state.modalOpen = false;
+    state.modalVehicleId = null;
+    modalBackdrop.classList.add('hidden');
+  }
+
   function render() {
     renderSelection();
     renderRoster();
+    renderSatellites();
+    if (state.modalOpen) renderModal();
   }
 
   function setFormation(mode) {
@@ -94,10 +199,14 @@ export function createHud(state) {
   }
 
   function tickClock() {
-    clockEl.textContent = new Date().toLocaleTimeString('en-GB', { hour12: false });
+    const now = new Date();
+    clockEl.textContent = now.toLocaleTimeString('en-GB', { hour12: false });
+    dateEl.textContent = now
+      .toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+      .toUpperCase();
   }
 
-  return { pushLog, render, renderSelection, renderRoster, setFormation, tickClock };
+  return { pushLog, render, renderSelection, renderRoster, renderSatellites, setFormation, tickClock, openModal, closeModal };
 }
 
 export function runBootSequence(onDone) {

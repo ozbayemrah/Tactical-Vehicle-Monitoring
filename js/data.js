@@ -34,6 +34,12 @@ export function offsetLatLng(lat, lng, angleRad, meters) {
   return { lat: lat + dLat, lng: lng + dLng };
 }
 
+const SATELLITE_NAMES = ['GPS-14', 'MILSTAR-2', 'NOAA-9', 'IRIDIUM-88'];
+
+export function generateSatellites() {
+  return SATELLITE_NAMES.map((id) => ({ id, status: 'LOCKED' }));
+}
+
 export function generateFleet(center, count = 10) {
   const types = Object.keys(VEHICLE_TYPES);
   const fleet = [];

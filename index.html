@@ -23,7 +23,9 @@
           <span class="brand-mark">&#9670;</span> TACTICAL VEHICLE MONITORING <span class="brand-sub">// SECTOR C2</span>
         </div>
         <div class="top-right">
+          <div id="sat-cluster" class="sat-cluster"></div>
           <span id="formation-mode" class="formation-badge">LINE</span>
+          <span id="date">00 JAN 2026</span>
           <span id="clock">00:00:00</span>
         </div>
       </div>
@@ -68,6 +70,50 @@
         </div>
       </div>
     </aside>
+  </div>
+
+  <div id="modal-backdrop" class="modal-backdrop hidden">
+    <div id="vehicle-modal" class="hud-frame modal-panel">
+      <div class="hud-body modal-body">
+        <div class="modal-header">
+          <div>
+            <span id="modal-callsign" class="modal-callsign"></span>
+            <span id="modal-type" class="modal-type"></span>
+          </div>
+          <button id="modal-close" class="modal-close" aria-label="Close">&times;</button>
+        </div>
+
+        <div class="modal-grid">
+          <div id="modal-icon" class="modal-icon"><div class="modal-triangle"></div></div>
+          <div class="modal-stats">
+            <div class="stat-row"><span>FUEL</span><div class="bar"><div id="modal-fuel-bar" class="bar-fill"></div></div><span id="modal-fuel-val"></span></div>
+            <div class="stat-row"><span>HULL</span><div class="bar"><div id="modal-hull-bar" class="bar-fill"></div></div><span id="modal-hull-val"></span></div>
+            <div class="stat-row"><span>RADIO</span><span id="modal-radio"></span></div>
+            <div class="stat-row"><span>POS</span><span id="modal-pos"></span></div>
+            <div class="stat-row"><span>HDG</span><span id="modal-hdg"></span></div>
+            <div class="stat-row"><span>ORDER</span><span id="modal-order"></span></div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <div class="panel-title">PERSONNEL</div>
+          <div class="modal-kv"><span>CAPTAIN</span><span id="modal-captain"></span></div>
+          <div class="modal-kv"><span>CREW</span><span id="modal-crew"></span></div>
+          <div class="modal-kv"><span>SQUAD</span><span id="modal-squad"></span></div>
+        </div>
+
+        <div class="modal-section">
+          <div class="panel-title">LOADOUT</div>
+          <div class="modal-kv"><span>AMMUNITION</span><span id="modal-ammo"></span></div>
+          <div class="modal-kv"><span>ARMOR</span><span id="modal-armor"></span></div>
+        </div>
+
+        <div class="modal-section">
+          <div class="panel-title">ACTIVITY</div>
+          <div id="modal-activity" class="modal-activity"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="alert-bar"></div>

@@ -125,7 +125,7 @@ export function createInput(map, state, hud) {
 
   // -- keybindings --
   document.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT') return;
+    if (e.target.tagName === 'INPUT' || state.modalOpen) return;
     const key = e.key.toLowerCase();
     if (key === 'h') holdSelected();
     else if (key === 'p') togglePatrol();

@@ -73,8 +73,28 @@ export function createSimulation(state, { onLog, render }) {
     updateMarker(v, state.selected.has(v.id));
   }
 
+  function tickSatellite(sat) {
+    const roll = Math.random();
+    if (sat.status === 'LOCKED' && roll < 0.0008) {
+      sat.status = 'DEGRADED';
+      onLog(`SATCOM ${sat.id} signal DEGRADED.`, 'warning');
+    } else if (sat.status === 'DEGRADED') {
+      if (roll < 0.004) {
+        sat.status = 'LOST';
+        onLog(`SATCOM ${sat.id} LINK LOST.`, 'critical');
+      } else if (roll > 0.99) {
+        sat.status = 'LOCKED';
+        onLog(`SATCOM ${sat.id} signal restored, LOCKED.`, 'info');
+      }
+    } else if (sat.status === 'LOST' && roll > 0.985) {
+      sat.status = 'DEGRADED';
+      onLog(`SATCOM ${sat.id} partial reacquisition, DEGRADED.`, 'warning');
+    }
+  }
+
   function tick() {
     state.fleet.forEach(tickVehicle);
+    (state.satellites || []).forEach(tickSatellite);
     render();
   }
 

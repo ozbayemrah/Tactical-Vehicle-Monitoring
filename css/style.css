@@ -104,6 +104,21 @@ body {
 }
 
 #clock { color: var(--cyan); letter-spacing: 1px; }
+#date { color: var(--text-dim); letter-spacing: 1px; }
+
+.sat-cluster { display: flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: 0.5px; color: var(--text-dim); }
+
+.sat-chip { display: flex; align-items: center; gap: 5px; }
+
+.sat-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 5px var(--green);
+}
+.sat-dot.degraded { background: var(--amber); box-shadow: 0 0 5px var(--amber); }
+.sat-dot.lost { background: var(--danger); box-shadow: 0 0 5px var(--danger); animation: blink 1s infinite; }
 
 /* map */
 #map-frame { grid-area: map; }
@@ -312,6 +327,110 @@ body {
   background: rgba(0,229,255,0.1);
   pointer-events: none;
   z-index: 500;
+}
+
+/* vehicle detail modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 6, 8, 0.75);
+  backdrop-filter: blur(2px);
+}
+.modal-backdrop.hidden { display: none; }
+
+.modal-panel { width: min(520px, 90vw); }
+
+#vehicle-modal .hud-body {
+  height: auto;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 18px 20px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+
+.modal-callsign {
+  font-family: var(--font-head);
+  font-size: 18px;
+  color: var(--cyan);
+  text-shadow: 0 0 8px rgba(0,229,255,0.4);
+}
+
+.modal-type { color: var(--text-dim); font-size: 11px; letter-spacing: 1px; margin-left: 10px; }
+
+.modal-close {
+  background: none;
+  border: 1px solid var(--panel-border);
+  color: var(--cyan);
+  width: 26px;
+  height: 26px;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+.modal-close:hover { background: rgba(0, 229, 255, 0.1); }
+
+.modal-grid {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 6px;
+}
+
+.modal-icon {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  position: relative;
+  --type-color: var(--cyan);
+  --hdg: 0deg;
+}
+
+.modal-triangle {
+  position: absolute;
+  top: 8px;
+  left: 22px;
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 28px solid var(--type-color);
+  filter: drop-shadow(0 0 6px currentColor);
+  color: var(--type-color);
+  transform: rotate(var(--hdg));
+  transform-origin: 50% 60%;
+}
+
+.modal-stats { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+
+.modal-section { margin-top: 14px; }
+
+.modal-kv {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  font-size: 11px;
+  padding: 2px 0;
+  color: var(--text-dim);
+}
+.modal-kv span:last-child { color: #cdeef2; }
+
+.modal-activity {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 10px;
+  margin-top: 6px;
 }
 
 /* boot screen */
