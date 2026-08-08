@@ -1,7 +1,7 @@
 :root {
   --bg: #060a0c;
-  --panel-bg: rgba(8, 16, 20, 0.88);
-  --panel-border: rgba(0, 229, 255, 0.25);
+  --panel-bg: rgba(9, 18, 22, 0.92);
+  --panel-border: rgba(0, 229, 255, 0.3);
   --cyan: #00e5ff;
   --magenta: #ff2fd0;
   --amber: #ffb300;
@@ -10,6 +10,9 @@
   --text-dim: #6fa8ad;
   --font-head: 'Orbitron', sans-serif;
   --font-body: 'Share Tech Mono', monospace;
+  --gap: 14px;
+  --radius: 6px;
+  --panel-shadow: 0 0 22px rgba(0, 0, 0, 0.55), inset 0 0 30px rgba(0, 229, 255, 0.03);
 }
 
 * { box-sizing: border-box; }
@@ -27,6 +30,8 @@ html, body {
   position: relative;
   z-index: 1;
   height: 100vh;
+  box-sizing: border-box;
+  padding: var(--gap);
   display: grid;
   grid-template-areas:
     "top top top"
@@ -34,6 +39,7 @@ html, body {
     "log log log";
   grid-template-rows: 56px 1fr 170px;
   grid-template-columns: 300px 1fr 340px;
+  gap: var(--gap);
 }
 
 /* top bar */
@@ -43,8 +49,10 @@ html, body {
   align-items: center;
   justify-content: space-between;
   padding: 0 18px;
-  background: linear-gradient(180deg, rgba(0,229,255,0.08), transparent);
-  border-bottom: 1px solid var(--panel-border);
+  background: linear-gradient(180deg, rgba(0,229,255,0.08), transparent), var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--panel-shadow);
 }
 
 .brand {
@@ -75,6 +83,10 @@ html, body {
 #map {
   grid-area: map;
   background: #04080a;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--panel-shadow);
+  overflow: hidden;
 }
 
 .leaflet-container { background: #04080a; }
@@ -83,7 +95,9 @@ html, body {
 #hud-side {
   grid-area: side;
   background: var(--panel-bg);
-  border-left: 1px solid var(--panel-border);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--panel-shadow);
   padding: 12px;
   overflow-y: auto;
 }
@@ -92,7 +106,9 @@ html, body {
 #hud-roster {
   grid-area: roster;
   background: var(--panel-bg);
-  border-right: 1px solid var(--panel-border);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--panel-shadow);
   padding: 12px;
   overflow-y: auto;
 }
@@ -230,7 +246,9 @@ html, body {
 #hud-log {
   grid-area: log;
   background: var(--panel-bg);
-  border-top: 1px solid var(--panel-border);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--panel-shadow);
   padding: 8px 14px;
   overflow: hidden;
   display: flex;
